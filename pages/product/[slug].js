@@ -7,17 +7,21 @@ const Post = () => {
 
   const [pin, setPin] = useState('')
   const checkServiceAbility = async () => {
-    if (pin.length === 6) {
-      let r = await fetch('http://localhost:3000/api/pincode')
+      let r = await fetch(`https://api.postalpincode.in/pincode/${pin}`)
       let p = await r.json()
-      console.log(t)
-      if(p.includes(parseInt(pin))){
-        setT(true)
-      }
-      else
+
+      if (p[0].Status === 'Success') {
+        if ((p[0].PostOffice)[0].Circle === "Uttar Pradesh"){
+          setT(true)
+        }
+        else
+          setT(false)
+      } 
+      else{
       setT(false)
-    } else {
-      alert('Please Enter correct pin')
+      setTimeout(() => {
+        alert('Please Enter correct pin')
+      }, 5);
     }
   }
     
